@@ -1,8 +1,9 @@
 import os
 
 import joblib
-from fastapi import APIRouter, Request, Query
+from fastapi import APIRouter, Request, Body
 import google.generativeai as genai
+from models.interest_based_learning import Example
 
 interest_based_learning_router = APIRouter()
 
@@ -64,10 +65,11 @@ async def test_post(request: Request):
     print(arg["test_score"], " ", arg["average_quiz_time"])
     return True
 
-@interest_based_learning_router.get("/give_expample/{topic:str, interest:str, subject:str}", tags=["Interest Based Learning"])
-def give_example(topic:str = Query(...), interest:str = Query(...), subject:str = Query(...)):
+
+@interest_based_learning_router.post("/give_example", tags=["Interest Based Learning"])
+def give_example(example: Example = Body(...)):
     prompt_parts = [
-        f"give example of {topic} from {subject} in context of {interest}",
+        f"give example of {example.topic} from {example.subject} in context of {example.interest}",
         "in layman terms",
         "without markdown syntax"
     ]
