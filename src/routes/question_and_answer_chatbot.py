@@ -4,13 +4,10 @@ from fastapi import APIRouter, Body
 import os
 from models.qna import QnA
 from tflite_support.task import text
-
-# path for the loading of the model
-parent_dir_path = str(os.path.dirname(os.path.realpath(__file__)))
-parent_dir_path = parent_dir_path.replace("/src/routes", "")
+from utils.absolute_root import root_path
 
 # Initialization of the ml model
-answerer = text.BertQuestionAnswerer.create_from_file(parent_dir_path + '/public/ml_models/sample.tflite')
+answerer = text.BertQuestionAnswerer.create_from_file(root_path + '/public/ml_models/sample.tflite')
 
 question_and_answer_chatbot_router = APIRouter()
 

@@ -2,12 +2,13 @@
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
+
+from routes.interest_based_learning import interest_based_learning_router
 # , UploadFile, File
 # from fastapi.responses import JSONResponse
 # import shutil
 # import uuid
 from routes.note import note
-from routes.interest_based_learning import interest_based_learning_router
 from routes.question_and_answer_chatbot import question_and_answer_chatbot_router
 
 load_dotenv()
