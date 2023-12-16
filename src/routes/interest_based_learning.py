@@ -1,5 +1,8 @@
+import os
+
 import google.generativeai as genai
 import joblib
+from dotenv import load_dotenv
 from fastapi import APIRouter, Body
 from starlette.responses import JSONResponse
 
@@ -8,6 +11,7 @@ from utils.absolute_root import root_path
 from config.db import db
 from schemas.interest_based_learning import theory_entity, theories_entity
 
+load_dotenv()
 interest_based_learning_router = APIRouter()
 
 # interest based model
@@ -15,7 +19,7 @@ learning_style_predictor = joblib.load(root_path + '/public/ml_models/learning_s
 
 # Generative model
 
-genai.configure(api_key="AIzaSyD_E97C3XZ4I0XLV4vY-xndsfqgac3TcKA")
+genai.configure(api_key=os.getenv("GENERATIVE_AI_GOOGLE_API_KEY"))
 # Set up the model
 generation_config = {
     "temperature": 0.9,
