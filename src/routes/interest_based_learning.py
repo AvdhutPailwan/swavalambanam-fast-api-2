@@ -59,6 +59,17 @@ model = genai.GenerativeModel(model_name="gemini-pro",
 # response = model.generate_content(prompt_parts)
 # print(response.text)
 
+def generateResponse(example: Example):
+    prompt_parts = [
+        f"give example of {example.topic} from {example.subject} in context of {example.interest}",
+        "in layman terms",
+        "without markdown syntax"
+    ]
+
+    response = model.generate_content(prompt_parts)
+    return response.text
+
+
 
 # ----------------------------------------------------------------------------------
 @interest_based_learning_router.get("/", tags=["Interest Based Learning"])
@@ -77,16 +88,10 @@ def suitable_learning_style(data: Suggestion):
 
 @interest_based_learning_router.post("/give_example", tags=["Interest Based Learning"])
 def give_example(example: Example = Body(...)):
-    prompt_parts = [
-        f"give example of {example.topic} from {example.subject} in context of {example.interest}",
-        "in layman terms",
-        "without markdown syntax"
-    ]
-
-    response = model.generate_content(prompt_parts)
+    response = generateResponse(example)
     # print(response.text)
     return {
-        "answer": response.text
+        "answer": response
     }
 
 
