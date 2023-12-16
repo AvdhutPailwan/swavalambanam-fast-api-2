@@ -3,7 +3,7 @@ import os
 import google.generativeai as genai
 import joblib
 from dotenv import load_dotenv
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, Response
 
 from config.db import db
 from models.interest_based_learning import Example, Suggestion
@@ -66,10 +66,10 @@ def generateResponse(example: Example):
     ]
 
     response = model.generate_content(prompt_parts)
-    item = db.temp_example.find_one({})
-    item["answer"] = response.text
-    db.temp_example.replace_one({"_id": item["_id"]}, item)
-    return True
+    # item = db.temp_example.find_one({})
+    # item["answer"] = response.text
+    # db.temp_example.replace_one({"_id": item["_id"]}, item)
+    return response.text
 
 
 # ----------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ def suitable_learning_style(data: Suggestion):
 async def give_example(example: Example = Body(...)):
     response = generateResponse(example)
     return {
-        "success": response
+        "answer": response
     }
 
 
