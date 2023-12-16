@@ -80,8 +80,10 @@ def give_example(example: Example = Body(...)):
     ]
 
     response = model.generate_content(prompt_parts)
-    print(response.text)
-    return response.text
+    # print(response.text)
+    return {
+        "answer": response.text
+    }
 
 
 @interest_based_learning_router.post('/show_theory', tags=["Interest Based Learning"])
