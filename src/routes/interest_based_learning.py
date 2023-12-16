@@ -4,12 +4,11 @@ import google.generativeai as genai
 import joblib
 from dotenv import load_dotenv
 from fastapi import APIRouter, Body
-from starlette.responses import JSONResponse
 
-from models.interest_based_learning import Example, Suggestion
-from utils.absolute_root import root_path
 from config.db import db
-from schemas.interest_based_learning import theory_entity, theories_entity
+from models.interest_based_learning import Example, Suggestion
+from schemas.interest_based_learning import theory_entity
+from utils.absolute_root import root_path
 
 load_dotenv()
 interest_based_learning_router = APIRouter()
@@ -18,7 +17,7 @@ interest_based_learning_router = APIRouter()
 learning_style_predictor = joblib.load(root_path + '/public/ml_models/learning_style_classifier1.pkl')
 
 # Generative model
-
+temp: str = ""
 genai.configure(api_key=os.getenv("GENERATIVE_AI_GOOGLE_API_KEY"))
 # Set up the model
 generation_config = {
@@ -67,8 +66,10 @@ def generateResponse(example: Example):
     ]
 
     response = model.generate_content(prompt_parts)
-    return response.text
-
+    item = db.temp_example.find_one({})
+    item["answer"] = response.text
+    db.temp_example.replace_one({"_id": item["_id"]}, item)
+    return True
 
 
 # ----------------------------------------------------------------------------------
@@ -87,16 +88,23 @@ def suitable_learning_style(data: Suggestion):
 
 
 @interest_based_learning_router.post("/give_example", tags=["Interest Based Learning"])
-def give_example(example: Example = Body(...)):
+async def give_example(example: Example = Body(...)):
     response = generateResponse(example)
-    # print(response.text)
     return {
-        "answer": response
+        "success": response
+    }
+
+
+@interest_based_learning_router.get("/give_example", tags=["Interest Based Learning"])
+async def give_example():
+    item = db.temp_example.find_one({})
+    return {
+        "answer": item["answer"]
     }
 
 
 @interest_based_learning_router.post('/show_theory', tags=["Interest Based Learning"])
-async def theory_of_chapter(chapter_name = Body(...)):
+async def theory_of_chapter(chapter_name=Body(...)):
     data = db.chapters.find_one({"chapter_name": chapter_name})
     chapter_content = theory_entity(data)
     return chapter_content
