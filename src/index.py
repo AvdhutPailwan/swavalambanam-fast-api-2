@@ -10,6 +10,7 @@ from routes.interest_based_learning import interest_based_learning_router
 # import uuid
 from routes.note import note
 from routes.question_and_answer_chatbot import question_and_answer_chatbot_router
+from routes.quiz import quiz
 
 load_dotenv()
 
@@ -18,6 +19,7 @@ app = FastAPI()
 app.include_router(note, prefix="/notes")
 app.include_router(interest_based_learning_router, prefix="/interest_based_learning")
 app.include_router(question_and_answer_chatbot_router, prefix="/question_and_answer_chatbot")
+app.include_router(quiz, prefix="/quiz")
 
 # @app.post("/upload/audio/")
 # async def upload_audio_file(audio_file: UploadFile = File(...)):
