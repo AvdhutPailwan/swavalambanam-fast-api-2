@@ -44,6 +44,16 @@ async def give_example(example: Example = Body(...)):
     }
 
 
+@interest_based_learning_router.get("/get_chapters", tags=["Interest Based Learning"])
+def list_of_chapters():
+    chapters = db.chapters.find({})
+    chapter_names = []
+    for chapter in chapters:
+        chapter_names.append(chapter["chapter_name"])
+
+    return {"chapters": chapter_names}
+
+
 @interest_based_learning_router.post('/show_theory', tags=["Interest Based Learning"])
 async def theory_of_chapter(chapter_name=Body(...)):
     data = db.chapters.find_one({"chapter_name": chapter_name})
