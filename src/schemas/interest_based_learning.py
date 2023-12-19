@@ -1,7 +1,6 @@
 from bson.objectid import ObjectId
 def theory_entity(item) -> dict:
     return {
-        "id": str(item["_id"]),
         "theory": item["theory"],
         "video_code": item["video_code"],
         "chapter_name": item["chapter_name"]
