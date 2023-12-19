@@ -1,3 +1,4 @@
+from bson.objectid import ObjectId
 def theory_entity(item) -> dict:
     return {
         "id": str(item["_id"]),
