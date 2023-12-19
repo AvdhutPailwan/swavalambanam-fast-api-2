@@ -21,7 +21,8 @@ def know_your_rights(context: str = Body(...)):
             "act": act_name,
             "description": act_obj["Description"]
         }
-    else :
+    else:
         return {
-            "act": act_name
+            "act": act_name,
+            "description": ""
         }
