@@ -7,6 +7,7 @@ class Suggestion(BaseModel):
     avg_time: int
     interest: str
 
+
 class Example(BaseModel):
     topic: str
     subject: str

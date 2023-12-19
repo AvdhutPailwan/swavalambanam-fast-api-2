@@ -1,10 +1,13 @@
-from bson.objectid import ObjectId
 def theory_entity(item) -> dict:
-    return {
-        "theory": item["theory"],
-        "video_code": item["video_code"],
-        "chapter_name": item["chapter_name"]
-    }
+    if item is not None:
+        return {
+            "id": str(item["_id"]),
+            "theory": item["theory"],
+            "video_code": item["video_code"],
+            "chapter_name": item["chapter_name"]
+        }
+    else:
+        return {}
 
 
 def theories_entity(items) -> list:
@@ -12,7 +15,6 @@ def theories_entity(items) -> list:
     for item in items:
         li.append(theory_entity(item))
     return li
-
 
 # def example_entity(item) -> dict:
 #     return {

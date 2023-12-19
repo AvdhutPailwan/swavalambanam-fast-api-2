@@ -1,12 +1,15 @@
 def quiz_entity(item) -> dict:
-    return {
-        "Question": item["Question"],
-        "optionOne": item["optionOne"],
-        "optionTwo": item["optionTwo"],
-        "optionThree": item["optionThree"],
-        "optionFour": item["optionFour"],
-        "correctAns": item["correctAns"]
-    }
+    if item is not None:
+        return {
+            "Question": item["Question"],
+            "optionOne": item["optionOne"],
+            "optionTwo": item["optionTwo"],
+            "optionThree": item["optionThree"],
+            "optionFour": item["optionFour"],
+            "correctAns": item["correctAns"]
+        }
+    else:
+        return {}
 
 
 def quiz_entities(items):
