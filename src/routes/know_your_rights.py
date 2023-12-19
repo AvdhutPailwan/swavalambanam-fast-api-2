@@ -16,7 +16,12 @@ def know_your_rights(context: str = Body(...)):
     act = model.predict(vectorizer.transform([context]))
     act_name = act.tolist()[0]
     act_obj = db.rights.find_one({"ACT": act_name})
-    return {
-        "act": act_name,
-        "description": act_obj["Description"] | {}
-    }
+    if act_obj is not None:
+        return {
+            "act": act_name,
+            "description": act_obj["Description"]
+        }
+    else :
+        return {
+            "act": act_name
+        }
