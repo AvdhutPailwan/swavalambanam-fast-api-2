@@ -18,5 +18,5 @@ def know_your_rights(context: str = Body(...)):
     act_obj = db.rights.find_one({"ACT": act_name})
     return {
         "act": act_name,
-        "description": act_obj["Description"] | ""
+        "description": act_obj["Description"] | {}
     }
